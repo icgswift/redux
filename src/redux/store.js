@@ -1,6 +1,6 @@
-import {createStore} from 'redux'
-import  {counter}   from './reducers'
+import { createStore } from 'redux'
+import { counter } from './reducers'
 
-
-const store=createStore(counter)
+// console.log(counter)   可知第一次渲染没有dispatch
+const store = createStore(counter)
 export default store
