@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
 
-// -- import {INCREMENT,DECREMENT} from './redux/action-types'       以下-- 表示没有单独定义 Action Constructor
-
-// import { a,b } from './redux/actions' 以actions指代{ a,b }这个对象   引入Action Constructor  
+// import { a,b } from './redux/actions'    以actions指代{ a,b }这个对象   引入Action Constructor  
 import * as actions from './redux/actions'
 
 
 export default class Vd extends Component {
 
   inc = () => {
-    // -- this.props.store.dispatch({type:INCREMENT,data:number})
-
     // 得到增加数量的值 
     const number = this.msg.value * 1
-    //  调用store的dispatch方法更新状态:分发action(action.type,action.data)，触发reducer调用，产生新的state
+    
+    //  调用dispatch方法更新状态:分发action
+    // 1.执行actions.increment函数
+    // 2.action返回一个包含动作和数据的对象到store
+    // 3.触发reducer调用，产生新的state
+    // 4.subscribe方法监听到状态变化，调用render函数
+    
     this.props.store.dispatch(actions.increment(number))
+    //this.props.store.dispatch({type:INCREMENT,data:number})
   }
 
   dec = () => {
-    //--this.props.store.dispatch({type:DECREMENT,data:number})
-
     //    判断当前count的状态  不满足条件不予执行
     const count = this.props.store.getState()
 
@@ -30,8 +31,6 @@ export default class Vd extends Component {
   }
 
   incOdd = () => {
-    //  --this.props.store.dispatch({type:INCREMENT,data:number})
-
     const count = this.props.store.getState()
     if (count % 2 === 0) {
       const number = this.msg.value * 1
@@ -42,8 +41,6 @@ export default class Vd extends Component {
   incAsync = () => {
     setTimeout(
       () => {
-        //  --this.props.store.dispatch({type:INCREMENT,data:number})
-
         const number = this.msg.value * 1
         this.props.store.dispatch(actions.increment(number))
       }
@@ -56,11 +53,13 @@ export default class Vd extends Component {
     return (
       <div>
         <h1>you click me {count} times</h1>
+
         <select ref={(value) => { this.msg = value }}>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
         </select>
+
         <button onClick={this.inc}>+</button>
         <button onClick={this.dec}>-</button>
         <button onClick={this.incOdd}>increment if odd</button>
