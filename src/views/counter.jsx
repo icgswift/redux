@@ -1,40 +1,40 @@
-import React, { Component } from 'react';
+/* 
+   UI组件：不包含任何redux API
+*/
 
-// import { a,b } from './redux/actions'    以actions指代{ a,b }这个对象   引入Action Constructor  
-import * as actions from './redux/actions'
-
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 export default class Vd extends Component {
+  // 类型检查
+  static propTypes = {
+    count: PropTypes.number.isRequired,
+    decrement: PropTypes.func.isRequired,
+    increment: PropTypes.func.isRequired
+  }
 
   inc = () => {
-    // 得到增加数量的值 
     const number = this.msg.value * 1
-    
-    //  调用dispatch方法更新状态:分发action
-    // 1.执行actions.increment函数
-    // 2.action返回一个包含动作和数据的对象到store
-    // 3.触发reducer调用，产生新的state
-    // 4.subscribe方法监听到状态变化，调用render函数
-    
-    this.props.store.dispatch(actions.increment(number))
+
+    this.props.increment(number)
+    // this.props.store.dispatch(actions.increment(number))
     //this.props.store.dispatch({type:INCREMENT,data:number})
   }
 
   dec = () => {
-    //    判断当前count的状态  不满足条件不予执行
-    const count = this.props.store.getState()
-
     const number = this.msg.value * 1
+    const count = this.props.count
+
     if (count > 0) {
-      this.props.store.dispatch(actions.decrement(number))
+      this.props.decrement(number)
     }
   }
 
   incOdd = () => {
-    const count = this.props.store.getState()
+    const count = this.props.count
     if (count % 2 === 0) {
       const number = this.msg.value * 1
-      this.props.store.dispatch(actions.increment(number))
+      this.props.increment(number)
     }
   }
 
@@ -42,14 +42,13 @@ export default class Vd extends Component {
     setTimeout(
       () => {
         const number = this.msg.value * 1
-        this.props.store.dispatch(actions.increment(number))
+        this.props.increment(number)
       }
       , 1000)
   }
 
   render() {
-    const count = this.props.store.getState()
-    // console.log(count)
+    const count = this.props.count
     return (
       <div>
         <h1>you click me {count} times</h1>
